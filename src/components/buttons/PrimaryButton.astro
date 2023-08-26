@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button"> {
+  style?: Record<string, any> | null | undefined;
+}
+
+const attributes = Astro.props;
+---
+
+<button
+  class={`rounded-md p-2 bg-slate-800 text-slate-100 font-semibold ${attributes.class}`}
+  style={{
+    ...attributes.style,
+    fontFamily: "'Assistant', sans-serif",
+  }}
+  {...attributes}
+>
+  <slot />
+</button>

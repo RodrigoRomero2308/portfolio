@@ -1,0 +1,74 @@
+---
+import VerticalDivider from "./divider/VerticalDivider.astro";
+---
+
+<portfolio-nav>
+  <header class="fixed bg-slate-300 w-full">
+    <div class="flex items-center p-2">
+      <img
+        src="logo.png"
+        class="block object-contain flex-grow-0 max-w-fit w-8 h-8"
+        alt=""
+      />
+      <nav class="flex-1"></nav>
+      <button class="menu-trigger">
+        <img
+          src="menu_FILL0_wght400_GRAD0_opsz48.svg"
+          alt=""
+          class="block w-8 h-8"
+        />
+      </button>
+    </div>
+    <div class="menu overflow-hidden transition-all flex flex-col">
+      <VerticalDivider />
+      <a class="block p-1" href="#aboutMe">About me</a>
+      <VerticalDivider />
+      <a class="block p-1" href="#skills">Skills</a>
+      <VerticalDivider />
+      <a class="block p-1" href="#contact">Contact</a>
+      <VerticalDivider />
+    </div>
+  </header>
+</portfolio-nav>
+
+<script>
+  import { twMerge } from "tailwind-merge";
+
+  class PortfolioNav extends HTMLElement {
+    private menuStyles = {
+      off: "max-h-0",
+      on: "max-h-96",
+    } as const;
+
+    private menuOpened = false;
+    constructor() {
+      super();
+
+      const menuButtonTrigger = this.querySelector("button.menu-trigger");
+      const menuElement = this.querySelector(".menu");
+
+      if (!menuButtonTrigger || !menuElement) {
+        console.error("elements not found");
+        return;
+      }
+
+      menuElement.className = twMerge(
+        menuElement.className,
+        this.menuStyles.off
+      );
+
+      menuButtonTrigger.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        console.log(menuElement.className);
+
+        this.menuOpened = !this.menuOpened;
+
+        menuElement.className = twMerge(
+          menuElement.className,
+          this.menuStyles[this.menuOpened ? "on" : "off"]
+        );
+      });
+    }
+  }
+  customElements.define("portfolio-nav", PortfolioNav);
+</script>
